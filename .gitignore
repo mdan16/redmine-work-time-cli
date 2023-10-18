@@ -21,3 +21,5 @@
 go.work
 
 redmine-work-time-cli
+
+dist/
