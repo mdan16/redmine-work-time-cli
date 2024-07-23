@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/schollz/progressbar/v3"
 	"gopkg.in/yaml.v3"
 )
 
@@ -38,6 +39,7 @@ func (c *CMD) Run(file string) error {
 		apiKey: c.input.RedmineAPIKey,
 	}
 
+	bar := progressbar.Default(int64(len(c.input.TimeEntries)))
 	for _, t := range c.input.TimeEntries {
 		t.SpentOn = c.input.SpentOn
 		err := client.saveTimeEntry(t)
@@ -47,6 +49,8 @@ func (c *CMD) Run(file string) error {
 		} else if err != nil {
 			return fmt.Errorf("failed to save time entry: %w", err)
 		}
+
+		bar.Add(1)
 	}
 
 	return nil
